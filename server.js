@@ -10,6 +10,7 @@ app.get('/api/0_1/login', function(req, res) {
     conn.collection('users').find({username:req.query.user,password:req.query.pass}).toArray(function (err, users) {
         if(err){
            res.status(500).send({status:"error",desc:err.errmsg}); 
+           return;
         }
         
         
@@ -21,6 +22,44 @@ app.get('/api/0_1/login', function(req, res) {
     });
         
 });
+
+app.get('/api/0_1/register', function(req, res) {
+    console.log("register");
+    var user = req.query.user;
+    var pass = req.query.pass;
+    var email = req.query.email;
+    
+    if(!user||!pass||!email){
+        res.status(412).send({status:"error",desc:"missing arguments"})
+    }
+    conn.collection('users').insert({username:user,password:pass,email:email}, function(err, result) {
+        if (err) {
+            res.status(500).send({status:"error",desc:err.errmsg}); 
+            return;
+        }
+        res.send({status:"ok",result:result})
+    });
+        
+});
+
+app.get('/api/0_1/users', function(req, res) {
+    console.log("users");
+    conn.collection('users').find().toArray(function (err, users) {
+        if(err){
+           res.status(500).send({status:"error",desc:err.errmsg}); 
+           return;
+        }
+        
+        
+        if(typeof users === "undefined"|| users.length===0){
+            res.status(401).send({status:"false"});
+        }else{
+            res.send({status:"ok",users:users});
+        }
+    });
+        
+});
+
 
 
 app.get('/wines/:id', function(req, res) {
