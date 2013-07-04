@@ -1,7 +1,7 @@
 var express = require('express');
 var mongo = require('mongoskin');
 
-var conn = mongo.db('moguelator:yvk80co@dharma.mongohq.com:10049/vel-api-01');
+var conn = mongo.db('moguelator:#####@dharma.mongohq.com:10049/vel-api-01');
 
 var app = express();
  
